@@ -1,0 +1,110 @@
+import java.util.Scanner;
+
+public class Fraction {
+	int fz;
+	int fm;
+
+	Fraction(int fz, int fm)// 构造函数
+	{
+		this.fz = fz;
+		if (fm != 0)// 判断分母是否为零，不为零则正常赋值，为零则分母赋值为1
+			this.fm = fm;
+		else
+			this.fm = 1;
+	}
+
+	int max(int a, int b) // 求最大公约数
+	{
+		int c;
+		if (a < b) { // 将a设为较大数
+			c = a;
+			a = b;
+			b = c;
+		}
+		int r = a % b;
+		while (r != 0) { // 辗转相除
+			a = b;
+			b = r;
+			r = a % b;
+		}
+		return b; // b为最大公约数
+	}
+
+	void f() // 化简分数
+	{
+		int n = max(this.fz, this.fm);
+		if (n != 1 & n != -1) {
+			this.fz /= n;
+			this.fm /= n;
+		}
+	}
+
+	void display() // 输出
+	{
+		this.f();
+		if (fm != 1)
+			System.out.println(fz + "/" + fm);// 输出分数
+		else
+			System.out.println(fz);// 当分母为1时输出整数
+	}
+
+	void add(Fraction num) // 相加
+	{
+		int up = this.fz * num.fm + num.fz * this.fm;
+		int down = this.fm * num.fm;
+		Fraction result = new Fraction(up, down);
+		result.display();
+	}
+
+	void sub(Fraction num) // 相减
+	{
+		int up = this.fz * num.fm - num.fz * this.fm;
+		int down = this.fm * num.fm;
+		Fraction result = new Fraction(up, down);
+		result.display();
+	}
+
+	void mul(Fraction num) // 相乘
+	{
+		int up = this.fz * num.fz;
+		int down = this.fm * num.fm;
+		Fraction result = new Fraction(up, down);
+		result.display();
+	}
+
+	void div(Fraction num) // 相除
+	{
+		int up = this.fz * num.fm;
+		int down = this.fm * num.fz;
+		Fraction result = new Fraction(up, down);
+		result.display();
+	}
+
+	public static void add(Fraction num1, Fraction num2) // 静态方法调用
+	{
+		int up = num1.fz * num2.fm + num2.fz * num1.fm;
+		int down = num1.fm * num2.fm;
+		Fraction result = new Fraction(up, down);
+		result.display();
+	}
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		Fraction num1 = new Fraction(1, 3);
+		Fraction num2 = new Fraction(2, 4);// 实际上是1/2
+		num1.display();
+		num2.display();
+		System.out.print("相加：");
+		num1.add(num2);
+		System.out.print("相减：");
+		num1.sub(num2);
+		System.out.print("相乘：");
+		num1.mul(num2);
+		System.out.print("相除：");
+		num1.div(num2);
+		System.out.print("静态调用相加：");
+		Fraction.add(num1, num2);
+		sc.next();
+		sc.close();
+	}
+}
